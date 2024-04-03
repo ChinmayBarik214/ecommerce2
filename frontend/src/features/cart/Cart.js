@@ -70,10 +70,18 @@ export default function Cart() {
                       </p>
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
-                      <p className="text-gray-500">
-                        Qty
-                        <select name="" id=""></select>
-                      </p>
+                      <div className="text-gray-500">
+                        <label
+                          htmlFor="quantity"
+                          className="inline mr-2 text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Qty
+                        </label>
+                        <select>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                        </select>
+                      </div>
 
                       <div className="flex">
                         <button
