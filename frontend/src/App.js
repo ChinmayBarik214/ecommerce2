@@ -1,14 +1,15 @@
 import React from "react";
 import logo from "./logo.svg";
 import { Counter } from "./features/counter/Counter";
+import "tailwindcss/tailwind.css";
 function App() {
   return (
     <div className="App">
-      <h1 className="text-red-500">Test text</h1>
+      <h1>Test text</h1>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
-        <p className="bg-red-950">
+        <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <span>
