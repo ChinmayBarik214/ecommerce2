@@ -1,6 +1,8 @@
 function SignupPage() {
   return (
-    <div>SignupPage</div>
+    <div>
+      <Signup />
+    </div>
   )
 }
 
