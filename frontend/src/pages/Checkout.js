@@ -31,7 +31,7 @@ const products = [
 function Checkout() {
   const [open, setOpen] = useState(true);
   return (
-    <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
       <div className="lg:col-span-3">
         <form>
           <div className="space-y-12">
