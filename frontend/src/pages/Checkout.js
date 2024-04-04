@@ -28,6 +28,24 @@ const products = [
   // More products...
 ];
 
+const addresses = [
+  {
+    name: "Chinmay Barik",
+    street: "Pataudi Road",
+    city: "Gurugram",
+    pinCode: "122001",
+    state: "Haryana",
+    phone: "6394008835",
+  },
+  {
+    name: "John Doe",
+    street: "11th main",
+    city: "Gurugram",
+    pinCode: "110001",
+    state: "Haryana",
+    phone: "1231231231",
+  },
+];
 function Checkout() {
   const [open, setOpen] = useState(true);
   return (
@@ -196,12 +214,46 @@ function Checkout() {
 
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
-                  Notifications
+                  Address
                 </h2>
                 <p className="mt-1 text-sm leading-6 text-gray-600">
-                  We'll always let you know about important changes, but you
-                  pick what else you want to hear about.
+                  Choose from Existing addresses
                 </p>
+                <ul role="list" className="divide-y divide-gray-100">
+                  {addresses.map((address) => (
+                    <li
+                      key={address.email}
+                      className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200"
+                    >
+                      <div className="flex min-w-0 gap-x-4">
+                        <input
+                          name="address"
+                          type="radio"
+                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        />
+                        <div className="min-w-0 flex-auto">
+                          <p className="text-sm font-semibold leading-6 text-gray-900">
+                            {address.name}
+                          </p>
+                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {address.street}
+                          </p>
+                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {address.pinCode}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                        <p className="text-sm leading-6 text-gray-900">
+                          Phone: {address.phone}
+                        </p>
+                        <p className="text-sm leading-6 text-gray-500">
+                          {address.city}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
 
                 <div className="mt-10 space-y-10">
                   <fieldset>
@@ -209,18 +261,18 @@ function Checkout() {
                       Payment Methods
                     </legend>
                     <p className="mt-1 text-sm leading-6 text-gray-600">
-                      Choose one.
+                      Choose one
                     </p>
                     <div className="mt-6 space-y-6">
                       <div className="flex items-center gap-x-3">
                         <input
-                          id="push-everything"
-                          name="push-notifications"
+                          id="cash"
+                          name="payments"
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label
-                          htmlFor="push-everything"
+                          htmlFor="cash"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
                           Cash
@@ -228,30 +280,16 @@ function Checkout() {
                       </div>
                       <div className="flex items-center gap-x-3">
                         <input
-                          id="push-email"
-                          name="push-notifications"
+                          id="card"
+                          name="payments"
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label
-                          htmlFor="push-email"
+                          htmlFor="card"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
                           Card Payment
-                        </label>
-                      </div>
-                      <div className="flex items-center gap-x-3">
-                        <input
-                          id="push-nothing"
-                          name="push-notifications"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        />
-                        <label
-                          htmlFor="push-nothing"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          No push notifications
                         </label>
                       </div>
                     </div>
@@ -283,7 +321,7 @@ function Checkout() {
                 Cart
               </h1>
               <div className="flow-root">
-                <ul role="list" className="-my-6 divide-y divide-gray-200">
+                <ul role="list">
                   {products.map((product) => (
                     <li key={product.id} className="flex py-6">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
