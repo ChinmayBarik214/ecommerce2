@@ -6,7 +6,7 @@ const initialState = {
   status: "idle",
 };
 
-export const fetchAllProductsAsync = createAsyncThunk(
+export const incrementAsync = createAsyncThunk(
   "counter/fetchCount",
   async () => {
     const response = await fetchAllProducts();
