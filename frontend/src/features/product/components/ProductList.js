@@ -245,20 +245,32 @@ export default function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const [filter, setFilter] = useState({});
+  const [sort, setSort] = useState({});
   const handleFilter = (e, section, option) => {
-    const newFilter = { ...filter, [section.id]: option.value };
+    const newFilter = { ...filter };
+    // TODO: on server it will support multiple categories
+    if (e.target.checked) {
+      if (newFilter[section.id]) {
+        newFilter[section.id].push(option.value);
+      } else {
+        newFilter[section.id] = [option.value]
+      }
+      
+    } else {
+      const index = newFilter[section.id].findIndex(e => e === option.value);
+      newFilter[section.id].splice(index, 1)
+    }
+    console.log({newFilter});
     setFilter(newFilter);
-    dispatch(fetchProductsByFiltersAsync(newFilter));
-    console.log(section.id, option.value);
   };
   const handleSort = (e, option) => {
-    const newFilter = { ...filter, _sort: option.sort, _order: option.order };
-    setFilter(newFilter);
-    dispatch(fetchProductsByFiltersAsync(newFilter));
+    const sort = { _sort: option.sort, _order: option.order };
+    console.log({sort})
+    setSort(sort);
   };
   useEffect(() => {
-    dispatch(fetchAllProductsAsync());
-  }, [dispatch]);
+    dispatch(fetchProductsByFiltersAsync({filter, sort}));
+  }, [dispatch, filter, sort]);
   return (
     <div>
       <div>
@@ -359,7 +371,7 @@ export default function ProductList() {
                 </div>
               </section>
               {/* Section of products and filter ending */}
-                <Pagination />
+              <Pagination />
             </main>
           </div>
         </div>

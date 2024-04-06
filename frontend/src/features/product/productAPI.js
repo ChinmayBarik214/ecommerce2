@@ -7,12 +7,20 @@ export function fetchAllProducts() {
   });
 }
 
-export function fetchProductsByFilters(filter) {
-  // filter = { "category": "smartphone" }
+export function fetchProductsByFilters(filter, sort) {
+  // filter = { "category": ["smartphone", "laptops"] }
+  // sort = {_sort: "price", _order="desc"}
   // on server we will support multiple values
   let queryString = ""
   for (let key in filter) {
+    const categoryValues = filter[key]
+    if (categoryValues.length > 0) {
+      const lastCategoryValue = categoryValues[categoryValues.length - 1]
+    }
     queryString += `${key}=${filter[key]}&`
+  }
+  for (let key in sort) {
+    queryString += `${key}=${sort[key]}&`
   }
   return new Promise(async (resolve) => {
     // TODO: We will not hard-code server URL here
