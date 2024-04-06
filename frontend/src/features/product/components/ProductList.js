@@ -281,6 +281,9 @@ export default function ProductList() {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
     dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
   }, [dispatch, filter, sort, page]);
+  useEffect(() => {
+    setPage(1)
+  }, [totalItems, sort])
   return (
     <div>
       <div>
@@ -599,8 +602,13 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
             <span className="font-medium">
               {(page - 1) * ITEMS_PER_PAGE + 1}
             </span>{" "}
-            to <span className="font-medium">{page * ITEMS_PER_PAGE}</span> of{" "}
-            <span className="font-medium">{totalItems}</span> results
+            to{" "}
+            <span className="font-medium">
+              {page * ITEMS_PER_PAGE > totalItems
+                ? totalItems
+                : page * ITEMS_PER_PAGE}
+            </span>{" "}
+            of <span className="font-medium">{totalItems}</span> results
           </p>
         </div>
         <div>
