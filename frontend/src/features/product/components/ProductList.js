@@ -1,6 +1,10 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllProductsAsync, fetchProductsByFiltersAsync, selectAllProducts } from "../productSlice";
+import {
+  fetchAllProductsAsync,
+  fetchProductsByFiltersAsync,
+  selectAllProducts,
+} from "../productSlice";
 import { Link } from "react-router-dom";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -18,11 +22,9 @@ import {
 } from "@heroicons/react/20/solid";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Best Rating", sort: "rating", order: "desc", current: false },
+  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
+  { name: "Price: High to Low", sort: "price", order: "desc", current: false },
 ];
 
 const filters = [
@@ -30,34 +32,34 @@ const filters = [
     id: "category",
     name: "Category",
     options: [
-      { value: 'smartphones', label: 'smartphones', checked: false },
-      { value: 'laptops', label: 'laptops', checked: false },
-      { value: 'fragrances', label: 'fragrances', checked: false },
-      { value: 'skincare', label: 'skincare', checked: false },
-      { value: 'groceries', label: 'groceries', checked: false },
+      { value: "smartphones", label: "smartphones", checked: false },
+      { value: "laptops", label: "laptops", checked: false },
+      { value: "fragrances", label: "fragrances", checked: false },
+      { value: "skincare", label: "skincare", checked: false },
+      { value: "groceries", label: "groceries", checked: false },
       {
-        value: 'home-decoration',
-        label: 'home decoration',
-        checked: false
+        value: "home-decoration",
+        label: "home decoration",
+        checked: false,
       },
-      { value: 'furniture', label: 'furniture', checked: false },
-      { value: 'tops', label: 'tops', checked: false },
-      { value: 'womens-dresses', label: 'womens dresses', checked: false },
-      { value: 'womens-shoes', label: 'womens shoes', checked: false },
-      { value: 'mens-shirts', label: 'mens shirts', checked: false },
-      { value: 'mens-shoes', label: 'mens shoes', checked: false },
-      { value: 'mens-watches', label: 'mens watches', checked: false },
-      { value: 'womens-watches', label: 'womens watches', checked: false },
-      { value: 'womens-bags', label: 'womens bags', checked: false },
+      { value: "furniture", label: "furniture", checked: false },
+      { value: "tops", label: "tops", checked: false },
+      { value: "womens-dresses", label: "womens dresses", checked: false },
+      { value: "womens-shoes", label: "womens shoes", checked: false },
+      { value: "mens-shirts", label: "mens shirts", checked: false },
+      { value: "mens-shoes", label: "mens shoes", checked: false },
+      { value: "mens-watches", label: "mens watches", checked: false },
+      { value: "womens-watches", label: "womens watches", checked: false },
+      { value: "womens-bags", label: "womens bags", checked: false },
       {
-        value: 'womens-jewellery',
-        label: 'womens jewellery',
-        checked: false
+        value: "womens-jewellery",
+        label: "womens jewellery",
+        checked: false,
       },
-      { value: 'sunglasses', label: 'sunglasses', checked: false },
-      { value: 'automotive', label: 'automotive', checked: false },
-      { value: 'motorcycle', label: 'motorcycle', checked: false },
-      { value: 'lighting', label: 'lighting', checked: false }
+      { value: "sunglasses", label: "sunglasses", checked: false },
+      { value: "automotive", label: "automotive", checked: false },
+      { value: "motorcycle", label: "motorcycle", checked: false },
+      { value: "lighting", label: "lighting", checked: false },
     ],
   },
   {
@@ -244,11 +246,16 @@ export default function ProductList() {
   const products = useSelector(selectAllProducts);
   const [filter, setFilter] = useState({});
   const handleFilter = (e, section, option) => {
-    const newFilter = {...filter, [section.id]:option.value}
-    setFilter(newFilter)
-    dispatch(fetchProductsByFiltersAsync(newFilter))
-    console.log(section.id, option.value)
-  }
+    const newFilter = { ...filter, [section.id]: option.value };
+    setFilter(newFilter);
+    dispatch(fetchProductsByFiltersAsync(newFilter));
+    console.log(section.id, option.value);
+  };
+  const handleSort = (e, option) => {
+    const newFilter = { ...filter, _sort: option.sort, _order:option.order };
+    setFilter(newFilter);
+    dispatch(fetchProductsByFiltersAsync(newFilter));
+  };
   useEffect(() => {
     dispatch(fetchAllProductsAsync());
   }, [dispatch]);
@@ -345,7 +352,9 @@ export default function ProductList() {
                                             defaultValue={option.value}
                                             type="checkbox"
                                             defaultChecked={option.checked}
-                                            onChange={e => handleFilter(e, section, option)}
+                                            onChange={(e) =>
+                                              handleFilter(e, section, option)
+                                            }
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                           />
                                           <label
@@ -402,8 +411,8 @@ export default function ProductList() {
                           {sortOptions.map((option) => (
                             <Menu.Item key={option.name}>
                               {({ active }) => (
-                                <a
-                                  href={option.href}
+                                <p
+                                  onClick={e => handleSort(e, option)}
                                   className={classNames(
                                     option.current
                                       ? "font-medium text-gray-900"
@@ -413,7 +422,7 @@ export default function ProductList() {
                                   )}
                                 >
                                   {option.name}
-                                </a>
+                                </p>
                               )}
                             </Menu.Item>
                           ))}
@@ -492,7 +501,9 @@ export default function ProductList() {
                                       defaultValue={option.value}
                                       type="checkbox"
                                       defaultChecked={option.checked}
-                                      onChange={e => handleFilter(e, section, option)}
+                                      onChange={(e) =>
+                                        handleFilter(e, section, option)
+                                      }
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
                                     <label
@@ -533,13 +544,13 @@ export default function ProductList() {
                                 <div className="mt-4 flex justify-between">
                                   <div>
                                     <h3 className="text-sm text-gray-700">
-                                      <a href={product.thumbnail}>
+                                      <div href={product.thumbnail}>
                                         <span
                                           aria-hidden="true"
                                           className="absolute inset-0"
                                         />
                                         {product.title}
-                                      </a>
+                                      </div>
                                     </h3>
                                     <p className="mt-1 text-sm text-gray-500">
                                       <StarIcon className="w-6 h-6 inline" />
@@ -550,14 +561,14 @@ export default function ProductList() {
                                   </div>
                                   <div>
                                     <p className="text-sm block font-medium text-gray-900">
-                                      ₹
+                                      $
                                       {Math.round(
                                         product.price *
                                           (1 - product.discountPercentage / 100)
                                       )}
                                     </p>
                                     <p className="text-sm block line-through font-medium text-gray-400">
-                                      ₹{product.price}
+                                      ${product.price}
                                     </p>
                                   </div>
                                 </div>
