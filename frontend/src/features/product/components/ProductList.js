@@ -359,9 +359,7 @@ export default function ProductList() {
                 </div>
               </section>
               {/* Section of products and filter ending */}
-              <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                 <Pagination />
-              </div>
             </main>
           </div>
         </div>
@@ -552,7 +550,7 @@ function DesktopFilter({ handleFilter }) {
 
 function Pagination() {
   return (
-    <>
+    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
         <a
           href="#"
@@ -611,7 +609,7 @@ function Pagination() {
           </nav>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
