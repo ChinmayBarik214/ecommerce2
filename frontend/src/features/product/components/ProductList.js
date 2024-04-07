@@ -55,7 +55,7 @@ export default function ProductList() {
       options: brands,
     },
   ];
-  
+
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -91,13 +91,13 @@ export default function ProductList() {
   }, [dispatch, filter, sort, page]);
 
   useEffect(() => {
-    setPage(1)
-  }, [totalItems, sort])
+    setPage(1);
+  }, [totalItems, sort]);
 
   useEffect(() => {
-    dispatch(fetchBrandsAsync())
-    dispatch(fetchCategoriesAsync())
-  }, [])
+    dispatch(fetchBrandsAsync());
+    dispatch(fetchCategoriesAsync());
+  }, []);
   return (
     <div>
       <div>
@@ -220,7 +220,7 @@ function MobileFilter({
   mobileFiltersOpen,
   setMobileFiltersOpen,
   handleFilter,
-  filters
+  filters,
 }) {
   return (
     <>
@@ -398,6 +398,7 @@ function DesktopFilter({ handleFilter, filters }) {
 }
 
 function Pagination({ page, setPage, handlePage, totalItems }) {
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
@@ -435,36 +436,34 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
             aria-label="Pagination"
           >
-            <a
-              href="#"
+            <div
+              onClick={(e) => handlePage(page > 1 ? page - 1 : page)}
               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-            </a>
+            </div>
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-            {Array.from({ length: Math.ceil(totalItems / ITEMS_PER_PAGE) }).map(
-              (el, index) => (
-                <div
-                  onClick={(e) => handlePage(index + 1)}
-                  aria-current="page"
-                  className={`cursor-pointer relative z-10 inline-flex items-center ${
-                    index + 1 === page
-                      ? "bg-indigo-600 text-white"
-                      : "text-gray-400"
-                  } px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                >
-                  {index + 1}
-                </div>
-              )
-            )}
-            <a
-              href="#"
+            {Array.from({ length: totalPages }).map((el, index) => (
+              <div
+                onClick={(e) => handlePage(index + 1)}
+                aria-current="page"
+                className={`cursor-pointer relative z-10 inline-flex items-center ${
+                  index + 1 === page
+                    ? "bg-indigo-600 text-white"
+                    : "text-gray-400"
+                } px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+              >
+                {index + 1}
+              </div>
+            ))}
+            <div
+              onClick={(e) => handlePage(page < totalPages ? page + 1 : page)}
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
               <span className="sr-only">Next</span>
               <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-            </a>
+            </div>
           </nav>
         </div>
       </div>
