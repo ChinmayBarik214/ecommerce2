@@ -2,8 +2,6 @@ import React, { useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchAllProductsAsync,
-  fetchBrandsAsync,
-  fetchCategoriesAsync,
   fetchProductsByFiltersAsync,
   selectAllProducts,
   selectBrands,
@@ -89,15 +87,9 @@ export default function ProductList() {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
     dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
   }, [dispatch, filter, sort, page]);
-
   useEffect(() => {
     setPage(1)
   }, [totalItems, sort])
-
-  useEffect(() => {
-    dispatch(fetchBrandsAsync())
-    dispatch(fetchCategoriesAsync())
-  }, [])
   return (
     <div>
       <div>
