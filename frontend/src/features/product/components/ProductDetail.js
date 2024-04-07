@@ -30,12 +30,12 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product = useSelector(selectedProductById);
-  const dispatch = useDispatch()
+  const dispath = useDispatch()
   const params = useParams()
 
   useEffect(()=> {
-    dispatch(fetchAllProductsByIdAsync(params.id))
-  }, [dispatch, params.id])
+    dispath(fetchAllProductsByIdAsync(params.id))
+  }, [dispath, params.id])
   return (
     <div className="bg-white">
       <div className="pt-6">
